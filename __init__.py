@@ -22,10 +22,10 @@ class GoodMorningSkill(MycroftSkill):
         ]
  
     def initialize(self):
-        self.parser = VocabularyIntentParser(self.voc_dir)
-        self.register_vocab_intent("AffirmationIntent", "en-us")
-        self.register_vocab_intent("YesIntent", "en-us")
-        self.register_vocab_intent("NoIntent", "en-us")
+        self.parser = VocabularyIntentParser(self.handle_morning_good)
+        self.register_vocab_intent("AffirmationIntent", self.handle_affirmation_intent)
+        self.register_vocab_intent("YesIntent", self.handle_yes_intent)
+        self.register_vocab_intent("NoIntent", self.handle_no_intent)
  
     @intent_handler('morning.good.intent')
 def handle_morning_good(self, message):

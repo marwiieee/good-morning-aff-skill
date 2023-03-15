@@ -1,8 +1,25 @@
-Good morning
-Morning
-Yes, I would like to hear some words of affirmation
-Read me my affirmations
-Tell me something positive
-affirmation
-Yes
-No
+{
+    "morning.good.intent": {
+        "utterances": [
+            "good morning"
+        ]
+    },
+    "AffirmationIntent": {
+        "utterances": [
+            "yes",
+            "affirmation"
+        ]
+    },
+    "YesIntent": {
+        "utterances": [
+            "yes please",
+            "yes"
+        ]
+    },
+    "NoIntent": {
+        "utterances": [
+            "no thank you",
+            "no"
+        ]
+    }
+}
