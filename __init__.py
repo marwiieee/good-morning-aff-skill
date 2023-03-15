@@ -28,26 +28,44 @@ class GoodMorningSkill(MycroftSkill):
         self.register_vocab_intent("NoIntent", "en-us")
  
     @intent_handler('morning.good.intent')
-    def handle_morning_good(self, message):
-        self.speak_dialog('morning.good')
-        self.speak("Good morning, would you like to hear some words of affirmation?")
+def handle_morning_good(self, message):
+    self.speak_dialog('morning.good')
+    self.speak("Good morning, would you like to hear some words of affirmation?")
+    self.parser.parse('AffirmationIntent', self.handle_affirmation_intent)
  
-    @intent_handler(IntentBuilder("AffirmationIntent").require("affirmation"))
-    def handle_affirmation_intent(self, message):
-        affirmation = random.choice(self.affirmations)
-        self.speak_dialog("affirmation_response")
-        self.speak(affirmation)
+def handle_affirmation_intent(self, message):
+    affirmation = random.choice(self.affirmations)
+    self.speak_dialog("affirmation_response")
+    self.speak(affirmation)
+    self.speak("Would you like to hear more affirmations?")
+    self.parser.parse('YesIntent', self.handle_yes_intent)
+    self.parser.parse('NoIntent', self.handle_no_intent)
  
-    @intent_handler(IntentBuilder("YesIntent").require("yes"))
-    def handle_yes_intent(self, message):
-        affirmation = random.choice(self.affirmations)
-        self.speak(affirmation)
+def handle_yes_intent(self, message):
+    affirmation = random.choice(self.affirmations)
+    self.speak(affirmation)
+    self.speak("Would you like to hear more affirmations?")
+    self.parser.parse('YesIntent', self.handle_yes_intent)
+    self.parser.parse('NoIntent', self.handle_no_intent)
  
-    @intent_handler(IntentBuilder("NoIntent").require("no"))
-    def handle_no_intent(self, message):
-        self.speak_dialog("no-response")
-        for option in self.other_options:
-            self.speak(option)
+def handle_no_intent(self, message):
+    self.speak_dialog("no-response")
+    self.speak("Would you like to hear some other options?")
+    self.parser.parse('YesIntent', self.handle_other_options)
+    self.parser.parse('NoIntent', self.handle_exit_skill)
+ 
+def handle_other_options(self, message):
+    option = random.choice(self.other_options)
+    self.speak(option)
+    self.speak("Would you like to hear more options?")
+    self.parser.parse('YesIntent', self.handle_other_options)
+    self.parser.parse('NoIntent', self.handle_exit_skill)
+ 
+def handle_exit_skill(self, message):
+    self.speak("Okay, have a great day!")
+    self.speak("Exiting the Good Morning Skill.")
+    self.log.debug("Exiting the Good Morning Skill.")
+    self.enclosure.skill_finished()
  
     @staticmethod
     def create_skill():
